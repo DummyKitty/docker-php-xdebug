@@ -1,0 +1,16 @@
+version: '3'
+services:
+  web:
+    platform: linux/amd64
+    image: "dummykitty/php-xdebug:7.2-apache"
+
+    volumes:
+      - "../phar:/var/www/html"
+      - "./xdebug2.ini:/usr/local/etc/php/conf.d/xdebug.ini"
+      - "./php.ini:/usr/local/etc/php/php.ini"
+      - "./sources.list:/etc/apt/sources.list"
+    ports:
+      - "28999:80"
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

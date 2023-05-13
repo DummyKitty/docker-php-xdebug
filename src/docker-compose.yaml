@@ -1,0 +1,15 @@
+version: '3'
+services:
+  web:
+    platform: linux/amd64
+    image: "mobtitude/php-xdebug:5.6-apache"
+
+    volumes:
+      - "./html:/var/www/html"
+      - "./xdebug2.ini:/usr/local/etc/php/conf.d/xdebug.ini"
+      - "./php.ini:/usr/local/etc/php/php.ini"
+    ports:
+      - "28999:80"
+
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

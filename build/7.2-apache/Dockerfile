@@ -1,19 +1,13 @@
-FROM php:7.2-apache
-MAINTAINER Przemek Szalko <przemek@mobtitude.com>
+FROM mobtitude/php-xdebug:7.2-apache
 
-# php intl extension
-RUN apt-get update \
-    && apt-get install -y libicu-dev \
-    && docker-php-ext-install intl \
-    && docker-php-ext-install pdo_mysql \
-    && docker-php-source delete \
-    && apt-get remove -y libicu-dev \
-    && apt-get autoremove -y \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+COPY sources.list /etc/apt/sources.list
 
-RUN pecl channel-update pecl.php.net \
-	&& pecl install xdebug-2.6.0 \
-	&& curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
+RUN apt-get update && apt-get install -y \
+    libbz2-dev
 
-COPY xdebug.ini /usr/local/etc/php/conf.d/xdebug.ini
+RUN docker-php-ext-install bz2
+
+COPY xdebug2.ini /usr/local/etc/php/conf.d/xdebug.ini
+COPY php.ini /usr/local/etc/php/php.ini
+
+# docker build -t dummykitty/php-xdebug:7.2-apache .
